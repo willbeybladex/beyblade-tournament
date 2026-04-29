@@ -577,113 +577,73 @@
     .player-row { font-size: 0.8rem; padding: 0.4rem 0.5rem; }
   }
 
-  /* Firebase status bar */
   #fb-status {
-    display: flex; align-items: center; gap: 8px;
-    padding: 0.5rem 1.5rem;
-    background: var(--surface2);
-    border-bottom: 1px solid var(--border);
-    font-size: 0.8rem;
+    display:flex;align-items:center;gap:8px;
+    padding:0.5rem 1.5rem;background:var(--surface2);
+    border-bottom:1px solid var(--border);font-size:0.8rem;
   }
-  .fb-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .fb-dot.ok { background: var(--win); box-shadow: 0 0 6px var(--win); }
-  .fb-dot.err { background: var(--lose); }
-  .fb-dot.connecting { background: var(--gold); animation: pulse 1s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-  #share-bar {
-    display: none; align-items: center; gap: 10px;
-    padding: 0.6rem 1.5rem;
-    background: rgba(34,197,94,0.06);
-    border-bottom: 1px solid rgba(34,197,94,0.15);
-    font-size: 0.82rem; flex-wrap: wrap;
-  }
-  #share-bar.visible { display: flex; }
-  #viewer-link {
-    flex: 1; min-width: 200px;
-    background: var(--surface2); border: 1px solid var(--border);
-    color: var(--accent); padding: 0.3rem 0.7rem;
-    border-radius: 6px; font-size: 0.82rem; font-family: inherit;
-    cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  }
-  .host-badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    background: rgba(108,99,255,0.12); border: 1px solid rgba(108,99,255,0.3);
-    color: var(--accent); border-radius: 20px;
-    padding: 0.2rem 0.7rem; font-size: 0.75rem; font-weight: 700;
-  }
+  .fb-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .fb-dot.ok{background:var(--win);box-shadow:0 0 6px var(--win)}
+  .fb-dot.err{background:var(--lose)}
+  .fb-dot.connecting{background:var(--gold);animation:fbpulse 1s infinite}
+  @keyframes fbpulse{0%,100%{opacity:1}50%{opacity:0.4}}
+  #share-bar{display:none;align-items:center;gap:10px;padding:0.6rem 1.5rem;
+    background:rgba(34,197,94,0.06);border-bottom:1px solid rgba(34,197,94,0.15);
+    font-size:0.82rem;flex-wrap:wrap}
+  #share-bar.visible{display:flex}
+  #viewer-link{flex:1;min-width:200px;background:var(--surface2);border:1px solid var(--border);
+    color:var(--accent);padding:0.3rem 0.7rem;border-radius:6px;font-size:0.82rem;
+    font-family:inherit;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .host-badge{display:inline-flex;align-items:center;gap:5px;
+    background:rgba(108,99,255,0.12);border:1px solid rgba(108,99,255,0.3);
+    color:var(--accent);border-radius:20px;padding:0.2rem 0.7rem;font-size:0.75rem;font-weight:700}
+  .copied-hint{color:var(--win);font-size:0.78rem;opacity:0;transition:opacity 0.3s}
 </style>
-<!-- Firebase SDK -->
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-  window._fbReady = false;
-
-  // ════════════════════════════════════════════════
-  // 👇 在這裡填入你的 Firebase 設定
-  const firebaseConfig = {
-    apiKey: "AIzaSyAwQKN-ik2LuUHnDwbY2Xh5lVIsQDw0gLQ",
-    authDomain: "beyblade-x-9fd7c.firebaseapp.com",
-    databaseURL: "https://beyblade-x-9fd7c-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "beyblade-x-9fd7c",
-    storageBucket: "beyblade-x-9fd7c.firebasestorage.app",
-    messagingSenderId: "167133820929",
-    appId: "1:167133820929:web:f07c3fccd97e20a03c6800"
-  };
-  // ════════════════════════════════════════════════
-
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-  window._fbDb = db;
-  window._fbRef = ref;
-  window._fbSet = set;
-  window._fbOnValue = onValue;
-  window._fbReady = true;
-  document.getElementById('fb-dot').className = 'fb-dot ok';
-  document.getElementById('fb-msg').textContent = '已連線 Firebase';
-  console.log('Firebase ready');
+import{ initializeApp }from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{ getDatabase,ref,set }from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+const cfg={apiKey:"AIzaSyAwQKN-ik2LuUHnDwbY2Xh5lVIsQDw0gLQ",authDomain:"beyblade-x-9fd7c.firebaseapp.com",databaseURL:"https://beyblade-x-9fd7c-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"beyblade-x-9fd7c",storageBucket:"beyblade-x-9fd7c.firebasestorage.app",messagingSenderId:"167133820929",appId:"1:167133820929:web:f07c3fccd97e20a03c6800"};
+const app=initializeApp(cfg);
+const db=getDatabase(app);
+window._db=db;window._ref=ref;window._set=set;window._fbReady=true;
+document.getElementById('fb-dot').className='fb-dot ok';
+document.getElementById('fb-msg').textContent='已連線 Firebase';
 </script>
 </head>
 <body>
-
 <header>
   <h1>⚔ 賽程表系統</h1>
   <p>單淘汰 · 瑞士輪（雙敗淘汰） <span class="host-badge">🔑 主持人</span></p>
 </header>
-
 <div id="fb-status">
   <div class="fb-dot connecting" id="fb-dot"></div>
   <span id="fb-msg">連線中…</span>
 </div>
-
 <div id="share-bar">
   <span style="color:var(--win);font-weight:700">🔗 觀眾連結：</span>
-  <input id="viewer-link" readonly onclick="this.select();document.execCommand('copy');showCopied()" />
+  <input id="viewer-link" readonly onclick="this.select();document.execCommand('copy');showCopied()"/>
   <button class="btn btn-secondary btn-sm" onclick="document.getElementById('viewer-link').select();document.execCommand('copy');showCopied()">複製</button>
-  <span id="copied-hint" style="color:var(--win);font-size:0.78rem;opacity:0;transition:opacity 0.3s">已複製！</span>
+  <span id="copied-hint" class="copied-hint">已複製！</span>
 </div>
-
 <div class="tabs">
   <div class="tab active" onclick="switchTab('single')">🏆 單淘汰</div>
   <div class="tab" onclick="switchTab('swiss')">🔄 瑞士輪</div>
 </div>
-
 <div class="controls">
   <div class="ctrl-group">
     <label>參賽人數（偶數）</label>
     <select id="playerCount" onchange="updateCount()">
-      <option value="4">4 人</option>
-      <option value="8" selected>8 人</option>
-      <option value="16">16 人</option>
-      <option value="32">32 人</option>
+      <option value="4">4 人</option><option value="8" selected>8 人</option>
+      <option value="16">16 人</option><option value="32">32 人</option>
     </select>
   </div>
   <div class="ctrl-group">
     <label>自訂人數</label>
-    <input type="number" id="customCount" min="2" max="64" step="2" placeholder="偶數" style="width:110px" />
+    <input type="number" id="customCount" min="2" max="64" step="2" placeholder="偶數" style="width:110px"/>
   </div>
   <div class="ctrl-group">
     <label>勝利所需分數</label>
-    <input type="number" id="winScore" min="1" max="99" value="4" style="width:80px" />
+    <input type="number" id="winScore" min="1" max="99" value="4" style="width:80px"/>
   </div>
   <div class="ctrl-group" style="flex-direction:row;gap:0.5rem;align-self:flex-end">
     <button class="btn btn-secondary" onclick="shufflePlayers()">🔀 洗亂編號</button>
@@ -691,16 +651,13 @@
     <button class="btn btn-secondary btn-sm" onclick="resetAll()" style="align-self:center">↺ 重置</button>
   </div>
 </div>
-
 <div id="app">
   <div style="text-align:center;padding:3rem;color:var(--muted)">
     <div style="font-size:3rem;margin-bottom:1rem">🏅</div>
-    <div style="font-size:1rem">選擇參賽人數後按「產生賽程」開始</div>
+    <div>選擇參賽人數後按「產生賽程」開始</div>
   </div>
 </div>
-
 <script>
-
 let currentTab = 'single';
 let numPlayers = 8;
 let players = [];
@@ -1086,44 +1043,19 @@ function renderSwiss() {
   document.getElementById('app').innerHTML = html;
 }
 
-
-// ─── Firebase sync: push state after every change ───
 function pushToFirebase() {
   if (!window._fbReady) return;
-  const state = {
-    tab: currentTab,
-    winScore: getWinScore(),
-    singleState: singleState ? JSON.parse(JSON.stringify(singleState)) : null,
-    swissState: swissState ? JSON.parse(JSON.stringify(swissState)) : null,
-    ts: Date.now()
-  };
-  window._fbSet(window._fbRef(window._fbDb, 'tournament'), state)
-    .catch(e => { document.getElementById('fb-msg').textContent = '同步失敗：' + e.message; });
+  const state = {tab:currentTab,winScore:getWinScore(),singleState:singleState?JSON.parse(JSON.stringify(singleState)):null,swissState:swissState?JSON.parse(JSON.stringify(swissState)):null,ts:Date.now()};
+  window._set(window._ref(window._db,'tournament'),state);
 }
-
-// Patch render functions to also push
-const _origRenderSingle = renderSingle;
-renderSingle = function() { _origRenderSingle(); pushToFirebase(); };
-const _origRenderSwiss = renderSwiss;
-renderSwiss = function() { _origRenderSwiss(); pushToFirebase(); };
-
-// Show share bar & link after generate
-const _origGenerate = generate;
-generate = function() {
-  _origGenerate();
-  const bar = document.getElementById('share-bar');
-  if (bar) {
-    bar.classList.add('visible');
-    const url = window.location.href.replace('host.html', 'viewer.html');
-    document.getElementById('viewer-link').value = url;
-  }
+const _rs=renderSingle; renderSingle=function(){_rs();pushToFirebase();};
+const _rw=renderSwiss;  renderSwiss=function(){_rw();pushToFirebase();};
+const _gen=generate; generate=function(){
+  _gen();
+  const bar=document.getElementById('share-bar');
+  if(bar){bar.classList.add('visible');document.getElementById('viewer-link').value=window.location.href.replace('host.html','viewer.html');}
 };
-
-function showCopied() {
-  const h = document.getElementById('copied-hint');
-  h.style.opacity = '1';
-  setTimeout(() => h.style.opacity = '0', 1500);
-}
+function showCopied(){const h=document.getElementById('copied-hint');h.style.opacity='1';setTimeout(()=>h.style.opacity='0',1500);}
 </script>
 </body>
 </html>

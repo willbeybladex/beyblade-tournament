@@ -577,114 +577,58 @@
     .player-row { font-size: 0.8rem; padding: 0.4rem 0.5rem; }
   }
 
-  /* Viewer overrides */
-  .score-btn-row { display: none !important; }
-  .sc-btn { display: none !important; }
-  .controls { display: none !important; }
-  .tabs { pointer-events: none; }
-
-  #live-bar {
-    display: flex; align-items: center; gap: 8px;
-    padding: 0.5rem 1.5rem;
-    background: var(--surface2);
-    border-bottom: 1px solid var(--border);
-    font-size: 0.8rem;
-  }
-  .live-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--win); flex-shrink: 0;
-    animation: livepulse 1.5s ease-in-out infinite;
-  }
-  @keyframes livepulse { 0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,0.6)} 50%{box-shadow:0 0 0 5px rgba(34,197,94,0)} }
-  .viewer-badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3);
-    color: var(--win); border-radius: 20px;
-    padding: 0.2rem 0.7rem; font-size: 0.75rem; font-weight: 700;
-  }
-  #waiting {
-    text-align:center; padding: 4rem 2rem; color: var(--muted);
-  }
+  .score-btn-row{display:none!important}
+  .sc-btn{display:none!important}
+  .controls{display:none!important}
+  .tabs{pointer-events:none}
+  #live-bar{display:flex;align-items:center;gap:8px;padding:0.5rem 1.5rem;background:var(--surface2);border-bottom:1px solid var(--border);font-size:0.8rem}
+  .live-dot{width:8px;height:8px;border-radius:50%;background:var(--win);flex-shrink:0;animation:livepulse 1.5s ease-in-out infinite}
+  @keyframes livepulse{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,0.6)}50%{box-shadow:0 0 0 5px rgba(34,197,94,0)}}
+  .viewer-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:var(--win);border-radius:20px;padding:0.2rem 0.7rem;font-size:0.75rem;font-weight:700}
 </style>
-<!-- Firebase SDK -->
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
-  // ════════════════════════════════════════════════
-  // 👇 在這裡填入你的 Firebase 設定（與 host.html 相同）
-  const firebaseConfig = {
-    apiKey: "AIzaSyAwQKN-ik2LuUHnDwbY2Xh5lVIsQDw0gLQ",
-    authDomain: "beyblade-x-9fd7c.firebaseapp.com",
-    databaseURL: "https://beyblade-x-9fd7c-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "beyblade-x-9fd7c",
-    storageBucket: "beyblade-x-9fd7c.firebasestorage.app",
-    messagingSenderId: "167133820929",
-    appId: "1:167133820929:web:f07c3fccd97e20a03c6800"
-  };
-  // ════════════════════════════════════════════════
-
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-
-  onValue(ref(db, 'tournament'), (snapshot) => {
-    const data = snapshot.val();
-    if (!data) {
-      document.getElementById('waiting').style.display = 'block';
-      document.getElementById('app').innerHTML = '';
-      return;
-    }
-    document.getElementById('waiting').style.display = 'none';
-    document.getElementById('live-msg').textContent = '即時同步中 · 最後更新 ' + new Date(data.ts).toLocaleTimeString('zh-TW');
-
-    // Restore state
-    currentTab = data.tab || 'single';
-    singleState = data.singleState || null;
-    swissState = data.swissState || null;
-    // sync win score display (read-only)
-    document.getElementById('winScoreDisplay').textContent = data.winScore + ' 分';
-    // sync tab highlight
-    document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', (i===0&&currentTab==='single')||(i===1&&currentTab==='swiss')));
-    // render
-    if (currentTab === 'single' && singleState) renderSingle();
-    else if (currentTab === 'swiss' && swissState) renderSwiss();
-  });
+import{ initializeApp }from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{ getDatabase,ref,onValue }from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+const cfg={apiKey:"AIzaSyAwQKN-ik2LuUHnDwbY2Xh5lVIsQDw0gLQ",authDomain:"beyblade-x-9fd7c.firebaseapp.com",databaseURL:"https://beyblade-x-9fd7c-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"beyblade-x-9fd7c",storageBucket:"beyblade-x-9fd7c.firebasestorage.app",messagingSenderId:"167133820929",appId:"1:167133820929:web:f07c3fccd97e20a03c6800"};
+const app=initializeApp(cfg);
+const db=getDatabase(app);
+onValue(ref(db,'tournament'),(snap)=>{
+  const data=snap.val();
+  if(!data){document.getElementById('app').innerHTML='<div style="text-align:center;padding:4rem;color:var(--muted)"><div style="font-size:3rem">⏳</div><div>等待主持人產生賽程…</div></div>';return;}
+  document.getElementById('live-msg').textContent='即時同步中 · 最後更新 '+new Date(data.ts).toLocaleTimeString('zh-TW');
+  currentTab=data.tab||'single';
+  singleState=data.singleState||null;
+  swissState=data.swissState||null;
+  document.getElementById('winScoreDisplay').textContent=data.winScore+' 分';
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',(i===0&&currentTab==='single')||(i===1&&currentTab==='swiss')));
+  if(currentTab==='single'&&singleState)renderSingle();
+  else if(currentTab==='swiss'&&swissState)renderSwiss();
+});
 </script>
 </head>
 <body>
-
 <header>
   <h1>⚔ 賽程表系統</h1>
   <p>單淘汰 · 瑞士輪（雙敗淘汰） <span class="viewer-badge">👁 觀眾模式</span></p>
 </header>
-
 <div id="live-bar">
   <div class="live-dot"></div>
   <span id="live-msg">等待主持人開始…</span>
   <span style="margin-left:auto;color:var(--muted)">勝利分數：<strong id="winScoreDisplay" style="color:var(--text)">—</strong></span>
 </div>
-
 <div class="tabs">
   <div class="tab active">🏆 單淘汰</div>
   <div class="tab">🔄 瑞士輪</div>
 </div>
-
-<!-- controls hidden via CSS -->
 <div class="controls" style="display:none">
-  <input type="number" id="winScore" value="4" />
-  <input type="number" id="customCount" />
+  <input type="number" id="winScore" value="4"/>
+  <input type="number" id="customCount"/>
   <select id="playerCount"><option value="8">8</option></select>
 </div>
-
-<div id="waiting" style="display:none">
-  <div style="font-size:3rem;margin-bottom:1rem">⏳</div>
-  <div>等待主持人產生賽程…</div>
+<div id="app">
+  <div style="text-align:center;padding:4rem;color:var(--muted)"><div style="font-size:3rem">⏳</div><div>等待主持人產生賽程…</div></div>
 </div>
-
-<div id="app"></div>
-
 <script>
-
 let currentTab = 'single';
 let numPlayers = 8;
 let players = [];
@@ -1070,12 +1014,11 @@ function renderSwiss() {
   document.getElementById('app').innerHTML = html;
 }
 
-// Viewer: disable all interactive functions
-function addScore() {}
-function resetScore() {}
-function shufflePlayers() {}
-function generate() {}
-function resetAll() {}
+function addScore(){}
+function resetScore(){}
+function shufflePlayers(){}
+function generate(){}
+function resetAll(){}
 </script>
 </body>
 </html>
