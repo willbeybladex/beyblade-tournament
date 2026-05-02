@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BEYBLADE X — 後台管理</title>
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap');
+:root {
+  --bg:#050507;--surface:#0d0d12;--surface2:#13131a;--border:#2a1a1a;
+  --red:#e8001a;--red2:#ff3344;--redglow:rgba(232,0,26,0.35);
+  --chrome:#c8ccd4;--chrome2:#8a8f9a;--gold:#ffd700;
+  --win:#00e676;--lose:#ff1744;--text:#eeeef5;--muted:#55556a;
+  --radius:6px;
+  --font-head:'Orbitron',sans-serif;
+  --font-body:'Rajdhani',sans-serif;
+  --font-mono:'Share Tech Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;
+  background-image:
+    radial-gradient(ellipse 80% 40% at 50% -10%,rgba(232,0,26,0.12) 0%,transparent 70%),
+    repeating-linear-gradient(-45deg,transparent,transparent 40px,rgba(232,0,26,0.015) 40px,rgba(232,0,26,0.015) 41px);
+}
+header{position:relative;padding:2.2rem 2rem 1.6rem;text-align:center;overflow:hidden;
+  border-bottom:1px solid rgba(232,0,26,0.3);background:linear-gradient(180deg,#0a0006 0%,var(--bg) 100%);}
+header::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 50% 0%,rgba(232,0,26,0.2) 0%,transparent 70%);pointer-events:none;}
+.bey-ring{position:absolute;border-radius:50%;border:1px solid rgba(232,0,26,0.15);pointer-events:none;top:50%;left:50%;transform:translate(-50%,-50%);}
+.bey-ring:nth-child(1){width:300px;height:300px;animation:spin 12s linear infinite;}
+.bey-ring:nth-child(2){width:220px;height:220px;border-color:rgba(200,204,212,0.1);animation:spin 8s linear infinite reverse;}
+.bey-ring:nth-child(3){width:140px;height:140px;animation:spin 5s linear infinite;}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg);}}
+.bey-ring::after{content:'';position:absolute;width:6px;height:6px;background:var(--red);border-radius:50%;top:0;left:50%;transform:translateX(-50%);box-shadow:0 0 8px var(--red);}
+header h1{position:relative;font-family:var(--font-head);font-size:2.2rem;font-weight:900;letter-spacing:0.12em;color:#fff;text-shadow:0 0 20px var(--redglow),0 0 60px rgba(232,0,26,0.2);}
+header h1 .x-letter{color:var(--red);text-shadow:0 0 15px var(--red),0 0 40px var(--red);}
+header .subtitle{position:relative;margin-top:0.5rem;font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.2em;color:var(--chrome2);text-transform:uppercase;}
+.btn{padding:0.55rem 1.4rem;border:none;border-radius:var(--radius);cursor:pointer;font-family:var(--font-head);font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;transition:all 0.15s;position:relative;overflow:hidden;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);}
+.btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 50%);pointer-events:none;}
+.btn-primary{background:linear-gradient(135deg,#c20016,var(--red));color:#fff;box-shadow:0 0 15px rgba(232,0,26,0.4);}
+.btn-primary:hover{box-shadow:0 0 25px rgba(232,0,26,0.6);transform:translateY(-1px);}
+.btn-secondary{background:#13131a;color:var(--chrome);border:1px solid #2a2a3a;}
+.btn-secondary:hover{border-color:var(--red);color:var(--red);}
+.btn-danger{background:linear-gradient(135deg,#7a0010,var(--lose));color:#fff;}
+.btn-sm{padding:0.35rem 0.9rem;font-size:0.65rem;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);}
+input,select{background:#0a0a10;border:1px solid #2a1a1a;color:var(--text);padding:0.55rem 0.9rem;border-radius:var(--radius);font-size:0.95rem;font-family:var(--font-body);font-weight:600;outline:none;transition:border-color 0.2s,box-shadow 0.2s;width:100%;}
+input:focus,select:focus{border-color:var(--red);box-shadow:0 0 0 2px rgba(232,0,26,0.15);}
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:#2a1a1a;border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:var(--red);}
+
+.page-wrap{max-width:900px;margin:0 auto;padding:2rem 1.2rem 4rem;}
+.admin-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.35);color:var(--gold);border-radius:3px;padding:0.15rem 0.6rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);}
+.section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:1.5rem;position:relative;}
+.section::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--red),transparent);}
+.section-head{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 1.2rem 0.8rem 1.5rem;background:rgba(232,0,26,0.05);border-bottom:1px solid var(--border);}
+.section-title{font-family:var(--font-head);font-size:0.7rem;font-weight:700;color:var(--red);letter-spacing:0.15em;text-transform:uppercase;}
+.section-body{padding:1.2rem 1.5rem;}
+.settings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.setting-item{display:flex;flex-direction:column;gap:0.35rem;}
+.setting-item label{font-family:var(--font-mono);font-size:0.62rem;color:var(--red);letter-spacing:0.12em;text-transform:uppercase;}
+.setting-item input{font-family:var(--font-head);font-size:1.3rem;font-weight:900;text-align:center;color:var(--chrome);}
+.save-row{display:flex;gap:0.8rem;margin-top:1rem;align-items:center;}
+.saved-hint{font-family:var(--font-mono);font-size:0.7rem;color:var(--win);opacity:0;transition:opacity 0.3s;}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;text-align:center;}
+.stat-num{font-family:var(--font-head);font-size:2rem;font-weight:900;}
+.stat-lbl{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;color:var(--muted);margin-top:0.3rem;}
+.stat-total .stat-num{color:var(--chrome);}
+.stat-confirmed .stat-num{color:var(--win);}
+.stat-waitlist .stat-num{color:var(--gold);}
+.stat-remain .stat-num{color:var(--red);}
+.reg-table{width:100%;border-collapse:collapse;font-size:0.88rem;}
+.reg-table th{padding:0.55rem 1rem;text-align:left;font-family:var(--font-mono);font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.2);}
+.reg-table td{padding:0.6rem 1rem;border-bottom:1px solid rgba(30,30,40,0.5);vertical-align:middle;font-weight:600;}
+.reg-table tr:last-child td{border-bottom:none;}
+.reg-table tr:hover td{background:rgba(232,0,26,0.03);}
+.num-cell{font-family:var(--font-head);font-size:1.1rem;font-weight:900;color:var(--red);}
+.badge-confirmed{display:inline-block;padding:0.1rem 0.5rem;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.3);color:var(--win);border-radius:3px;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.06em;}
+.badge-waitlist{display:inline-block;padding:0.1rem 0.5rem;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);color:var(--gold);border-radius:3px;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.06em;}
+.del-btn{padding:0.2rem 0.5rem;background:rgba(255,23,68,0.08);border:1px solid rgba(255,23,68,0.2);color:var(--lose);border-radius:3px;font-size:0.72rem;cursor:pointer;font-family:var(--font-mono);transition:all 0.15s;}
+.del-btn:hover{background:rgba(255,23,68,0.2);border-color:var(--lose);}
+.promote-btn{padding:0.2rem 0.5rem;background:rgba(0,230,118,0.07);border:1px solid rgba(0,230,118,0.2);color:var(--win);border-radius:3px;font-size:0.72rem;cursor:pointer;font-family:var(--font-mono);transition:all 0.15s;margin-right:4px;}
+.promote-btn:hover{background:rgba(0,230,118,0.18);border-color:var(--win);}
+.filter-row{display:flex;gap:0.6rem;margin-bottom:1rem;flex-wrap:wrap;}
+.filter-btn{padding:0.3rem 0.8rem;border:1px solid var(--border);background:var(--surface2);color:var(--muted);border-radius:3px;font-family:var(--font-mono);font-size:0.65rem;cursor:pointer;letter-spacing:0.08em;transition:all 0.15s;}
+.filter-btn.active{border-color:var(--red);color:var(--red);background:rgba(232,0,26,0.06);}
+.export-row{display:flex;gap:0.6rem;margin-top:1rem;}
+.empty-state{text-align:center;padding:3rem;color:var(--muted);font-family:var(--font-mono);font-size:0.78rem;letter-spacing:0.12em;}
+@media(max-width:600px){.settings-grid{grid-template-columns:1fr 1fr;}.stat-row{grid-template-columns:1fr 1fr;}}
+</style>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getDatabase,ref,onValue,remove,update,set}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+const app=initializeApp({apiKey:"AIzaSyAwQKN-ik2LuUHnDwbY2Xh5lVIsQDw0gLQ",authDomain:"beyblade-x-9fd7c.firebaseapp.com",databaseURL:"https://beyblade-x-9fd7c-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"beyblade-x-9fd7c",storageBucket:"beyblade-x-9fd7c.firebasestorage.app",messagingSenderId:"167133820929",appId:"1:167133820929:web:f07c3fccd97e20a03c6800"});
+const db=getDatabase(app);
+let settings={total:32,confirmed:16,waitlist:8};
+let registrations={};
+let currentFilter='all';
+
+onValue(ref(db,'reg_settings'),(snap)=>{
+  if(snap.val())settings=snap.val();
+  document.getElementById('s-total').value=settings.total;
+  document.getElementById('s-confirmed').value=settings.confirmed;
+  document.getElementById('s-waitlist').value=settings.waitlist;
+});
+
+onValue(ref(db,'registrations'),(snap)=>{
+  registrations=snap.val()||{};
+  renderAll();
+});
+
+function renderAll(){
+  const vals=Object.entries(registrations).map(([k,v])=>{return{...v,_key:k};});
+  vals.sort((a,b)=>a.seq-b.seq);
+  const conf=vals.filter(v=>v.type==='confirmed');
+  const wait=vals.filter(v=>v.type==='waitlist');
+  const total=vals.length;
+  const remain=Math.max(0,settings.confirmed+settings.waitlist-total);
+  document.getElementById('stat-total').textContent=total;
+  document.getElementById('stat-conf').textContent=conf.length+'/'+settings.confirmed;
+  document.getElementById('stat-wait').textContent=wait.length+'/'+settings.waitlist;
+  document.getElementById('stat-remain').textContent=remain;
+
+  let filtered=vals;
+  if(currentFilter==='confirmed')filtered=conf;
+  else if(currentFilter==='waitlist')filtered=wait;
+
+  const tbody=document.getElementById('reg-tbody');
+  if(filtered.length===0){
+    tbody.innerHTML='<tr><td colspan="7"><div class="empty-state">NO ENTRIES FOUND</div></td></tr>';
+    return;
+  }
+  tbody.innerHTML=filtered.map(r=>{
+    const date=new Date(r.ts).toLocaleDateString('zh-TW')+' '+new Date(r.ts).toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});
+    const badge=r.type==='confirmed'?'<span class="badge-confirmed">✓ 正取</span>':'<span class="badge-waitlist">◈ 備取</span>';
+    const promote=r.type==='waitlist'?`<button class="promote-btn" onclick="promote('${r._key}')">↑ 晉正</button>`:'';
+    return `<tr>
+      <td class="num-cell">#${String(r.seq).padStart(2,'0')}</td>
+      <td style="font-weight:700">${r.name}</td>
+      <td style="font-family:var(--font-mono);font-size:0.82rem;color:var(--chrome2)">${r.phone}</td>
+      <td style="font-family:var(--font-mono);font-size:0.78rem;color:var(--chrome2)">${r.email}</td>
+      <td>${badge}</td>
+      <td style="font-family:var(--font-mono);font-size:0.72rem;color:var(--muted)">${date}</td>
+      <td>${promote}<button class="del-btn" onclick="deleteReg('${r._key}','${r.name}')">✕</button></td>
+    </tr>`;
+  }).join('');
+}
+
+window.setFilter=function(f){
+  currentFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.f===f));
+  renderAll();
+};
+
+window.saveSettings=async function(){
+  const t=parseInt(document.getElementById('s-total').value)||32;
+  const c=parseInt(document.getElementById('s-confirmed').value)||16;
+  const w=parseInt(document.getElementById('s-waitlist').value)||8;
+  settings={total:t,confirmed:c,waitlist:w};
+  await set(ref(db,'reg_settings'),settings);
+  const h=document.getElementById('saved-hint');
+  h.style.opacity='1';setTimeout(()=>h.style.opacity='0',1800);
+};
+
+window.deleteReg=function(key,name){
+  if(!confirm(`確定要刪除 ${name} 的報名資料？`))return;
+  remove(ref(db,'registrations/'+key));
+};
+
+window.promote=function(key){
+  const conf=Object.values(registrations).filter(r=>r.type==='confirmed').length;
+  if(conf>=settings.confirmed){alert('正取名額已滿，請先調整設定');return;}
+  if(!confirm('確定將此備取選手晉升為正取？'))return;
+  update(ref(db,'registrations/'+key),{type:'confirmed'});
+};
+
+window.exportCSV=function(){
+  const vals=Object.values(registrations).sort((a,b)=>a.seq-b.seq);
+  const rows=[['號碼','姓名','電話','Email','狀態','報名時間']];
+  vals.forEach(r=>{
+    rows.push([
+      '#'+String(r.seq).padStart(2,'0'),
+      r.name,r.phone,r.email,
+      r.type==='confirmed'?'正取':'備取',
+      new Date(r.ts).toLocaleString('zh-TW')
+    ]);
+  });
+  const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='beyblade_x_registrations.csv';a.click();
+};
+</script>
+</head>
+<body>
+<header>
+  <div class="bey-ring"></div><div class="bey-ring"></div><div class="bey-ring"></div>
+  <h1>BEYBLADE <span class="x-letter">X</span></h1>
+  <div class="subtitle">◆ ADMIN CONTROL PANEL ◆ <span class="admin-badge">👑 ADMIN</span></div>
+</header>
+<div class="page-wrap">
+
+  <!-- Stats -->
+  <div class="stat-row">
+    <div class="stat-card stat-total"><div class="stat-num" id="stat-total">—</div><div class="stat-lbl">TOTAL ENTRIES</div></div>
+    <div class="stat-card stat-confirmed"><div class="stat-num" id="stat-conf">—</div><div class="stat-lbl">CONFIRMED</div></div>
+    <div class="stat-card stat-waitlist"><div class="stat-num" id="stat-wait">—</div><div class="stat-lbl">WAITLIST</div></div>
+    <div class="stat-card stat-remain"><div class="stat-num" id="stat-remain">—</div><div class="stat-lbl">SLOTS LEFT</div></div>
+  </div>
+
+  <!-- Settings -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">⚙ SLOT SETTINGS</div>
+    </div>
+    <div class="section-body">
+      <div class="settings-grid">
+        <div class="setting-item">
+          <label>TOTAL SLOTS 總名額</label>
+          <input type="number" id="s-total" min="1" max="999" value="32"/>
+        </div>
+        <div class="setting-item">
+          <label>CONFIRMED 正取</label>
+          <input type="number" id="s-confirmed" min="1" max="999" value="16"/>
+        </div>
+        <div class="setting-item">
+          <label>WAITLIST 備取</label>
+          <input type="number" id="s-waitlist" min="0" max="999" value="8"/>
+        </div>
+      </div>
+      <div class="save-row">
+        <button class="btn btn-primary btn-sm" onclick="saveSettings()">▶ SAVE SETTINGS</button>
+        <span class="saved-hint" id="saved-hint">✓ SAVED</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Registration List -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">◆ REGISTERED BLADERS</div>
+      <button class="btn btn-secondary btn-sm" onclick="exportCSV()">↓ EXPORT CSV</button>
+    </div>
+    <div class="section-body">
+      <div class="filter-row">
+        <button class="filter-btn active" data-f="all" onclick="setFilter('all')">ALL</button>
+        <button class="filter-btn" data-f="confirmed" onclick="setFilter('confirmed')">✓ CONFIRMED</button>
+        <button class="filter-btn" data-f="waitlist" onclick="setFilter('waitlist')">◈ WAITLIST</button>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="reg-table">
+          <thead><tr>
+            <th>NO.</th><th>NAME 姓名</th><th>PHONE 電話</th><th>EMAIL</th><th>STATUS</th><th>TIME 時間</th><th>ACTION</th>
+          </tr></thead>
+          <tbody id="reg-tbody">
+            <tr><td colspan="7"><div class="empty-state">LOADING…</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

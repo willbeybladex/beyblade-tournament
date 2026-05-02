@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BEYBLADE X — 報名</title>
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap');
+:root {
+  --bg:#050507;--surface:#0d0d12;--surface2:#13131a;--border:#2a1a1a;
+  --red:#e8001a;--red2:#ff3344;--redglow:rgba(232,0,26,0.35);
+  --chrome:#c8ccd4;--chrome2:#8a8f9a;--gold:#ffd700;
+  --win:#00e676;--lose:#ff1744;--text:#eeeef5;--muted:#55556a;
+  --radius:6px;
+  --font-head:'Orbitron',sans-serif;
+  --font-body:'Rajdhani',sans-serif;
+  --font-mono:'Share Tech Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;
+  background-image:
+    radial-gradient(ellipse 80% 40% at 50% -10%,rgba(232,0,26,0.12) 0%,transparent 70%),
+    repeating-linear-gradient(-45deg,transparent,transparent 40px,rgba(232,0,26,0.015) 40px,rgba(232,0,26,0.015) 41px);
+}
+header{position:relative;padding:2.2rem 2rem 1.6rem;text-align:center;overflow:hidden;
+  border-bottom:1px solid rgba(232,0,26,0.3);background:linear-gradient(180deg,#0a0006 0%,var(--bg) 100%);}
+header::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 50% 0%,rgba(232,0,26,0.2) 0%,transparent 70%);pointer-events:none;}
+.bey-ring{position:absolute;border-radius:50%;border:1px solid rgba(232,0,26,0.15);pointer-events:none;top:50%;left:50%;transform:translate(-50%,-50%);}
+.bey-ring:nth-child(1){width:300px;height:300px;animation:spin 12s linear infinite;}
+.bey-ring:nth-child(2){width:220px;height:220px;border-color:rgba(200,204,212,0.1);animation:spin 8s linear infinite reverse;}
+.bey-ring:nth-child(3){width:140px;height:140px;animation:spin 5s linear infinite;}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg);}}
+.bey-ring::after{content:'';position:absolute;width:6px;height:6px;background:var(--red);border-radius:50%;top:0;left:50%;transform:translateX(-50%);box-shadow:0 0 8px var(--red);}
+header h1{position:relative;font-family:var(--font-head);font-size:2.2rem;font-weight:900;letter-spacing:0.12em;color:#fff;text-shadow:0 0 20px var(--redglow),0 0 60px rgba(232,0,26,0.2);}
+header h1 .x-letter{color:var(--red);text-shadow:0 0 15px var(--red),0 0 40px var(--red);}
+header .subtitle{position:relative;margin-top:0.5rem;font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.2em;color:var(--chrome2);text-transform:uppercase;}
+.btn{padding:0.55rem 1.4rem;border:none;border-radius:var(--radius);cursor:pointer;font-family:var(--font-head);font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;transition:all 0.15s;position:relative;overflow:hidden;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);}
+.btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 50%);pointer-events:none;}
+.btn-primary{background:linear-gradient(135deg,#c20016,var(--red));color:#fff;box-shadow:0 0 15px rgba(232,0,26,0.4);}
+.btn-primary:hover{box-shadow:0 0 25px rgba(232,0,26,0.6);transform:translateY(-1px);}
+.btn-secondary{background:#13131a;color:var(--chrome);border:1px solid #2a2a3a;}
+.btn-secondary:hover{border-color:var(--red);color:var(--red);}
+.btn-danger{background:linear-gradient(135deg,#7a0010,var(--lose));color:#fff;}
+.btn-sm{padding:0.35rem 0.9rem;font-size:0.65rem;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);}
+input,select{background:#0a0a10;border:1px solid #2a1a1a;color:var(--text);padding:0.55rem 0.9rem;border-radius:var(--radius);font-size:0.95rem;font-family:var(--font-body);font-weight:600;outline:none;transition:border-color 0.2s,box-shadow 0.2s;width:100%;}
+input:focus,select:focus{border-color:var(--red);box-shadow:0 0 0 2px rgba(232,0,26,0.15);}
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:#2a1a1a;border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:var(--red);}
+
+.page-wrap{max-width:520px;margin:0 auto;padding:2rem 1.2rem 4rem;}
+.slot-bar{
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;
+  margin-bottom:2rem;
+}
+.slot-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:0.9rem 1rem;text-align:center;
+  position:relative;overflow:hidden;
+}
+.slot-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;}
+.slot-card.total::before{background:var(--chrome2);}
+.slot-card.confirmed::before{background:var(--win);}
+.slot-card.waitlist::before{background:var(--gold);}
+.slot-num{font-family:var(--font-head);font-size:1.8rem;font-weight:900;line-height:1;}
+.slot-card.total .slot-num{color:var(--chrome);}
+.slot-card.confirmed .slot-num{color:var(--win);}
+.slot-card.waitlist .slot-num{color:var(--gold);}
+.slot-lbl{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;color:var(--muted);margin-top:0.3rem;text-transform:uppercase;}
+.form-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;
+  position:relative;
+}
+.form-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--red),transparent);}
+.form-header{
+  padding:0.9rem 1.2rem;background:rgba(232,0,26,0.06);
+  border-bottom:1px solid var(--border);
+  font-family:var(--font-head);font-size:0.72rem;font-weight:700;
+  color:var(--red);letter-spacing:0.15em;text-transform:uppercase;
+}
+.form-body{padding:1.4rem 1.4rem 1.4rem 1.6rem;display:flex;flex-direction:column;gap:1.1rem;}
+.field-group{display:flex;flex-direction:column;gap:0.35rem;}
+.field-group label{font-family:var(--font-mono);font-size:0.65rem;color:var(--red);letter-spacing:0.12em;text-transform:uppercase;}
+.field-group .hint{font-size:0.72rem;color:var(--muted);margin-top:0.2rem;}
+.submit-wrap{padding:0 1.6rem 1.6rem;}
+.submit-wrap .btn{width:100%;padding:0.8rem;font-size:0.8rem;letter-spacing:0.15em;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);}
+.status-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:0.3rem 0.9rem;border-radius:3px;
+  font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.08em;
+  margin-bottom:1.2rem;width:100%;justify-content:center;
+}
+.status-open{background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.25);color:var(--win);}
+.status-waitlist{background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.25);color:var(--gold);}
+.status-full{background:rgba(255,23,68,0.08);border:1px solid rgba(255,23,68,0.25);color:var(--lose);}
+.success-card{
+  background:var(--surface);border:1px solid rgba(0,230,118,0.3);
+  border-radius:var(--radius);padding:2rem;text-align:center;
+  position:relative;overflow:hidden;display:none;
+}
+.success-card.show{display:block;}
+.success-card::before{content:'X';position:absolute;font-family:var(--font-head);font-size:12rem;font-weight:900;color:rgba(0,230,118,0.04);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;line-height:1;}
+.num-display{
+  font-family:var(--font-head);font-size:5rem;font-weight:900;
+  color:var(--red);text-shadow:0 0 30px var(--redglow);
+  line-height:1;margin:0.5rem 0;
+}
+.num-label{font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;}
+.registrant-name{font-family:var(--font-head);font-size:1.2rem;color:var(--chrome);letter-spacing:0.1em;margin-top:0.8rem;}
+.type-confirmed{color:var(--win)!important;}
+.type-waitlist{color:var(--gold)!important;}
+.sep{border:none;border-top:1px solid var(--border);margin:1.5rem 0;}
+</style>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getDatabase,ref,onValue,push,get,update}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+const app=initializeApp({apiKey:"AIzaSyAwQKN-ik2LuUHnDwbY2Xh5lVIsQDw0gLQ",authDomain:"beyblade-x-9fd7c.firebaseapp.com",databaseURL:"https://beyblade-x-9fd7c-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"beyblade-x-9fd7c",storageBucket:"beyblade-x-9fd7c.firebasestorage.app",messagingSenderId:"167133820929",appId:"1:167133820929:web:f07c3fccd97e20a03c6800"});
+const db=getDatabase(app);
+let settings={total:32,confirmed:16,waitlist:8};
+let registrations={};
+
+function loadSettings(){
+  onValue(ref(db,'reg_settings'),(snap)=>{
+    const d=snap.val();
+    if(d)settings=d;
+    renderSlots();
+    renderStatus();
+  });
+  onValue(ref(db,'registrations'),(snap)=>{
+    registrations=snap.val()||{};
+    renderSlots();
+    renderStatus();
+  });
+}
+
+function countByType(){
+  let c=0,w=0;
+  Object.values(registrations).forEach(r=>{
+    if(r.type==='confirmed')c++;
+    else if(r.type==='waitlist')w++;
+  });
+  return{c,w};
+}
+
+function renderSlots(){
+  const{c,w}=countByType();
+  const total=c+w;
+  document.getElementById('s-total').textContent=settings.total;
+  document.getElementById('s-confirmed').textContent=`${c}/${settings.confirmed}`;
+  document.getElementById('s-waitlist').textContent=`${w}/${settings.waitlist}`;
+}
+
+function renderStatus(){
+  const{c,w}=countByType();
+  const badge=document.getElementById('reg-status');
+  const btn=document.getElementById('submit-btn');
+  if(c<settings.confirmed){
+    badge.className='status-badge status-open';
+    badge.innerHTML='● 報名開放中 &nbsp;·&nbsp; 正取名額尚有 '+(settings.confirmed-c)+' 位';
+    btn.textContent='▶ SUBMIT ENTRY';btn.disabled=false;
+  } else if(w<settings.waitlist){
+    badge.className='status-badge status-waitlist';
+    badge.innerHTML='◈ 候補報名中 &nbsp;·&nbsp; 備取名額尚有 '+(settings.waitlist-w)+' 位';
+    btn.textContent='▶ JOIN WAITLIST';btn.disabled=false;
+  } else{
+    badge.className='status-badge status-full';
+    badge.innerHTML='✕ 報名已額滿';
+    btn.textContent='REGISTRATION FULL';btn.disabled=true;
+  }
+}
+
+window.submitReg=async function(){
+  const name=document.getElementById('f-name').value.trim();
+  const phone=document.getElementById('f-phone').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  if(!name||!phone||!email){alert('請填寫所有欄位');return;}
+  if(!/^[^@]+@[^@]+\.[^@]+$/.test(email)){alert('Email 格式不正確');return;}
+
+  const btn=document.getElementById('submit-btn');
+  btn.disabled=true;btn.textContent='PROCESSING…';
+
+  // Re-check counts live
+  const snap=await get(ref(db,'registrations'));
+  const regs=snap.val()||{};
+  
+  // Check duplicate phone/email
+  const dup=Object.values(regs).find(r=>r.phone===phone||r.email===email);
+  if(dup){alert('此電話或 Email 已報名！');btn.disabled=false;renderStatus();return;}
+
+  let c=0,w=0,seq=0;
+  Object.values(regs).forEach(r=>{
+    if(r.type==='confirmed')c++;
+    else if(r.type==='waitlist')w++;
+    if(r.seq>seq)seq=r.seq;
+  });
+  seq++;
+
+  let type='';
+  if(c<settings.confirmed)type='confirmed';
+  else if(w<settings.waitlist)type='waitlist';
+  else{alert('報名已額滿');btn.disabled=false;renderStatus();return;}
+
+  const entry={name,phone,email,type,seq,ts:Date.now()};
+  await push(ref(db,'registrations'),entry);
+
+  // Show success
+  document.getElementById('reg-form-wrap').style.display='none';
+  const sc=document.getElementById('success-card');
+  sc.classList.add('show');
+  document.getElementById('sc-num').textContent=String(seq).padStart(2,'0');
+  document.getElementById('sc-name').textContent=name;
+  const tl=document.getElementById('sc-type');
+  if(type==='confirmed'){tl.textContent='✓ 正取';tl.className='type-confirmed';}
+  else{tl.textContent='◈ 備取';tl.className='type-waitlist';}
+  document.getElementById('sc-seq-label').textContent='#'+String(seq).padStart(2,'0');
+};
+
+loadSettings();
+</script>
+</head>
+<body>
+<header>
+  <div class="bey-ring"></div><div class="bey-ring"></div><div class="bey-ring"></div>
+  <h1>BEYBLADE <span class="x-letter">X</span></h1>
+  <div class="subtitle">◆ TOURNAMENT REGISTRATION ◆ BATTLE MODE ◆</div>
+</header>
+<div class="page-wrap">
+  <div class="slot-bar">
+    <div class="slot-card total">
+      <div class="slot-num" id="s-total">—</div>
+      <div class="slot-lbl">TOTAL SLOTS</div>
+    </div>
+    <div class="slot-card confirmed">
+      <div class="slot-num" id="s-confirmed">—</div>
+      <div class="slot-lbl">CONFIRMED</div>
+    </div>
+    <div class="slot-card waitlist">
+      <div class="slot-num" id="s-waitlist">—</div>
+      <div class="slot-lbl">WAITLIST</div>
+    </div>
+  </div>
+
+  <div id="reg-form-wrap">
+    <div class="status-badge status-open" id="reg-status">● 載入中…</div>
+    <div class="form-card">
+      <div class="form-header">◆ BLADER REGISTRATION</div>
+      <div class="form-body">
+        <div class="field-group">
+          <label>BLADER NAME &nbsp;陀螺鬥士姓名</label>
+          <input type="text" id="f-name" placeholder="你的名字" maxlength="20"/>
+        </div>
+        <div class="field-group">
+          <label>PHONE &nbsp;聯絡電話</label>
+          <input type="tel" id="f-phone" placeholder="09xxxxxxxx" maxlength="20"/>
+        </div>
+        <div class="field-group">
+          <label>EMAIL &nbsp;電子郵件</label>
+          <input type="email" id="f-email" placeholder="example@email.com" maxlength="60"/>
+          <div class="hint">報名確認通知將發送至此信箱</div>
+        </div>
+      </div>
+      <div class="submit-wrap">
+        <button class="btn btn-primary" id="submit-btn" onclick="submitReg()">▶ SUBMIT ENTRY</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="success-card" id="success-card">
+    <div class="num-label">YOUR BATTLE NUMBER</div>
+    <div class="num-display" id="sc-num">—</div>
+    <div id="sc-type" style="font-family:var(--font-mono);font-size:0.78rem;letter-spacing:0.15em;">—</div>
+    <div class="registrant-name" id="sc-name">—</div>
+    <hr class="sep"/>
+    <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;line-height:1.8">
+      報名序號 <strong id="sc-seq-label" style="color:var(--chrome)">—</strong><br>
+      請截圖保存此畫面<br>
+      主辦單位將透過 Email 確認報名資訊
+    </div>
+  </div>
+</div>
+</body>
+</html>
