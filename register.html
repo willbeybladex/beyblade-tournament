@@ -135,6 +135,21 @@ function loadSettings(){
     renderSlots();
     renderStatus();
   });
+  onValue(ref(db,'reg_open'),(snap)=>{
+    const isOpen=snap.val()!==false;
+    const closed=document.getElementById('reg-closed');
+    const form=document.getElementById('reg-form-wrap');
+    const success=document.getElementById('success-card');
+    if(!isOpen){
+      if(closed)closed.style.display='flex';
+      if(form)form.style.display='none';
+      if(success&&!success.classList.contains('show')){}
+    } else {
+      if(closed)closed.style.display='none';
+      if(form&&!document.getElementById('success-card').classList.contains('show'))
+        form.style.display='block';
+    }
+  });
 }
 
 function countByType(){
@@ -244,7 +259,13 @@ loadSettings();
     </div>
   </div>
 
-  <div id="reg-form-wrap">
+  <div id="reg-closed" style="display:none;flex-direction:column;align-items:center;padding:3rem 1rem;text-align:center;gap:1rem">
+  <div style="font-size:3rem">🔒</div>
+  <div style="font-family:var(--font-head);font-size:1rem;color:var(--red);letter-spacing:0.15em;text-transform:uppercase">報名尚未開放</div>
+  <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--muted);letter-spacing:0.1em;line-height:1.8">REGISTRATION IS CURRENTLY CLOSED<br>請等待主辦單位開放報名</div>
+</div>
+
+<div id="reg-form-wrap">
     <div class="status-badge status-open" id="reg-status">● 載入中…</div>
     <div class="form-card">
       <div class="form-header">◆ BLADER REGISTRATION</div>

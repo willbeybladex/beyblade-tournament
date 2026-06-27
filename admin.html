@@ -97,6 +97,18 @@ input:focus,select:focus{border-color:var(--red);box-shadow:0 0 0 2px rgba(232,0
 
 /* change password section */
 .pw-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
+/* toggle switch */
+.toggle-wrap{display:flex;align-items:center;gap:1rem;}
+.toggle{position:relative;width:56px;height:28px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;inset:0;background:#1a1a24;border:1px solid #2a2a3a;border-radius:28px;cursor:pointer;transition:all 0.3s;}
+.toggle-slider::before{content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;background:var(--muted);border-radius:50%;transition:all 0.3s;}
+.toggle input:checked+.toggle-slider{background:rgba(0,230,118,0.15);border-color:rgba(0,230,118,0.4);}
+.toggle input:checked+.toggle-slider::before{transform:translateX(28px);background:var(--win);box-shadow:0 0 8px var(--win);}
+.toggle-label{font-family:var(--font-mono);font-size:0.78rem;letter-spacing:0.08em;}
+.toggle-label.on{color:var(--win);}.toggle-label.off{color:var(--lose);}
+.btn-danger{background:linear-gradient(135deg,#7a0010,var(--lose));color:#fff;box-shadow:0 0 12px rgba(255,23,68,0.3);}
+.btn-danger:hover{box-shadow:0 0 22px rgba(255,23,68,0.5);transform:translateY(-1px);}
 </style>
 
 <script type="module">
@@ -150,6 +162,14 @@ function startAdmin(){
   onValue(ref(db,'registrations'),(snap)=>{
     registrations=snap.val()||{};
     renderAll();
+  });
+  // Listen to registration open/close state
+  onValue(ref(db,'reg_open'),(snap)=>{
+    const isOpen = snap.val()!==false; // default open
+    const toggle = document.getElementById('reg-toggle');
+    const label = document.getElementById('reg-toggle-label');
+    if(toggle) toggle.checked = isOpen;
+    if(label){ label.textContent = isOpen ? '開放報名中' : '報名已關閉'; label.className = 'toggle-label '+(isOpen?'on':'off'); }
   });
 }
 
@@ -232,6 +252,19 @@ window.changePassword=async function(){
 function showHint(el,msg,color){el.textContent=msg;el.style.color=color;el.style.opacity='1';setTimeout(()=>el.style.opacity='0',2500);}
 function flash(id){const h=document.getElementById(id);h.style.opacity='1';setTimeout(()=>h.style.opacity='0',1800);}
 
+window.toggleReg=async function(){
+  const isOpen=document.getElementById('reg-toggle').checked;
+  await set(ref(db,'reg_open'),isOpen);
+};
+
+window.clearAllReg=async function(){
+  const count=Object.keys(registrations).length;
+  if(count===0){alert('目前沒有報名資料');return;}
+  if(!confirm(`確定要清空全部 ${count} 筆報名資料？\n此操作無法復原！`))return;
+  if(!confirm('再次確認：清空後所有選手資料將永久刪除，確定嗎？'))return;
+  await remove(ref(db,'registrations'));
+};
+
 initLogin();
 </script>
 </head>
@@ -269,6 +302,29 @@ initLogin();
     <div class="stat-card stat-confirmed"><div class="stat-num" id="stat-conf">—</div><div class="stat-lbl">CONFIRMED</div></div>
     <div class="stat-card stat-waitlist"><div class="stat-num" id="stat-wait">—</div><div class="stat-lbl">WAITLIST</div></div>
     <div class="stat-card stat-remain"><div class="stat-num" id="stat-remain">—</div><div class="stat-lbl">SLOTS LEFT</div></div>
+  </div>
+
+  <!-- Registration Control -->
+  <div class="section">
+    <div class="section-head"><div class="section-title">📡 REGISTRATION CONTROL 報名控制</div></div>
+    <div class="section-body" style="display:flex;flex-wrap:wrap;gap:1.5rem;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--red);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.6rem;">報名開關</div>
+        <div class="toggle-wrap">
+          <label class="toggle">
+            <input type="checkbox" id="reg-toggle" checked onchange="toggleReg()">
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="toggle-label on" id="reg-toggle-label">開放報名中</span>
+        </div>
+        <div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);margin-top:0.6rem;line-height:1.6">關閉後報名頁將顯示「報名尚未開放」<br>已報名的資料不受影響</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.6rem;align-items:flex-start;">
+        <div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--red);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.2rem;">新賽季準備</div>
+        <button class="btn btn-danger btn-sm" onclick="clearAllReg()" style="clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);padding:0.5rem 1.2rem;font-size:0.7rem;">🗑 清空所有報名資料</button>
+        <div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--muted);line-height:1.6">清空前建議先匯出 CSV 備份<br>此操作無法復原</div>
+      </div>
+    </div>
   </div>
 
   <!-- Slot Settings -->
