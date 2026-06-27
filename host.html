@@ -190,6 +190,7 @@ document.getElementById('fb-msg').textContent='FIREBASE CONNECTED';
     <button class="btn btn-secondary" onclick="openSeedModal()">⚙ SEEDS</button>
     <button class="btn btn-secondary" onclick="shufflePlayers()">⚡ SHUFFLE</button>
     <button class="btn btn-primary" onclick="generate()">▶ GENERATE</button>
+    <button class="btn btn-secondary btn-sm" id="undo-btn" onclick="undo()" disabled style="opacity:0.35;border-color:rgba(255,170,0,0.3);color:#ffaa00" title="無可回溯">↩ UNDO</button>
     <button class="btn btn-secondary btn-sm" onclick="resetAll()">↺ RESET</button>
   </div>
 </div>
@@ -293,11 +294,11 @@ function generate(){
   _generate();
 }
 function _generate(){
-  numPlayers=players.length;
+  numPlayers=players.length;_clearHistory();
   if(currentTab==='single'){singleState=buildSingle([...players]);renderSingle();}
   else{swissState=buildSwiss([...players]);renderSwiss();}
 }
-function resetAll(){singleState=null;swissState=null;players=[];showEmpty();}
+function resetAll(){singleState=null;swissState=null;players=[];_clearHistory();showEmpty();}
 
 /* ── SINGLE ELIMINATION ── */
 function buildSingle(sp){
@@ -388,10 +389,38 @@ function renderSingle(){
   document.getElementById('app').innerHTML=html;
 }
 
+/* ── UNDO SYSTEM ── */
+let _history=[];
+const MAX_HIST=30;
+function saveHistory(){
+  _history.push({
+    single:singleState?JSON.parse(JSON.stringify(singleState)):null,
+    swiss:swissState?JSON.parse(JSON.stringify(swissState)):null
+  });
+  if(_history.length>MAX_HIST)_history.shift();
+  _updateUndoBtn();
+}
+function undo(){
+  if(_history.length===0)return;
+  const prev=_history.pop();
+  singleState=prev.single;swissState=prev.swiss;
+  _updateUndoBtn();
+  renderCurrent();
+}
+function _updateUndoBtn(){
+  const btn=document.getElementById('undo-btn');
+  if(!btn)return;
+  btn.disabled=_history.length===0;
+  btn.style.opacity=_history.length===0?'0.35':'1';
+  btn.title=_history.length>0?`上一動（還可回溯 ${_history.length} 步）`:'無可回溯';
+}
+function _clearHistory(){_history=[];_updateUndoBtn();}
+
 /* ── SCORING ── */
 function addScore(type,ri,mi,side,pts){
   const match=type==='single'?singleState.rounds[ri][mi]:swissState.rounds[ri][mi];
   if(match.winner)return;
+  saveHistory();
   if(side==='a')match.scoreA=(match.scoreA||0)+pts;
   else match.scoreB=(match.scoreB||0)+pts;
   const ws=getWinScore();
@@ -405,6 +434,7 @@ function addScore(type,ri,mi,side,pts){
   if(type==='single')renderSingle();else{advanceSwissRound();renderSwiss();}
 }
 function resetScore(type,ri,mi){
+  saveHistory();
   const match=type==='single'?singleState.rounds[ri][mi]:swissState.rounds[ri][mi];
   match.scoreA=0;match.scoreB=0;
   if(type==='single')renderSingle();else renderSwiss();

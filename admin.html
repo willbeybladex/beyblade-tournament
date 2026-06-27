@@ -5,28 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BEYBLADE X — 後台管理</title>
 <style>
-
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap');
-:root {
-  --bg:#050507;--surface:#0d0d12;--surface2:#13131a;--border:#2a1a1a;
-  --red:#e8001a;--red2:#ff3344;--redglow:rgba(232,0,26,0.35);
-  --chrome:#c8ccd4;--chrome2:#8a8f9a;--gold:#ffd700;
-  --win:#00e676;--lose:#ff1744;--text:#eeeef5;--muted:#55556a;
-  --radius:6px;
-  --font-head:'Orbitron',sans-serif;
-  --font-body:'Rajdhani',sans-serif;
-  --font-mono:'Share Tech Mono',monospace;
-}
+:root{--bg:#050507;--surface:#0d0d12;--surface2:#13131a;--border:#2a1a1a;--red:#e8001a;--redglow:rgba(232,0,26,0.35);--chrome:#c8ccd4;--chrome2:#8a8f9a;--gold:#ffd700;--win:#00e676;--lose:#ff1744;--text:#eeeef5;--muted:#55556a;--radius:6px;--font-head:'Orbitron',sans-serif;--font-body:'Rajdhani',sans-serif;--font-mono:'Share Tech Mono',monospace;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;
-  background-image:
-    radial-gradient(ellipse 80% 40% at 50% -10%,rgba(232,0,26,0.12) 0%,transparent 70%),
-    repeating-linear-gradient(-45deg,transparent,transparent 40px,rgba(232,0,26,0.015) 40px,rgba(232,0,26,0.015) 41px);
-}
-header{position:relative;padding:2.2rem 2rem 1.6rem;text-align:center;overflow:hidden;
-  border-bottom:1px solid rgba(232,0,26,0.3);background:linear-gradient(180deg,#0a0006 0%,var(--bg) 100%);}
-header::before{content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 60% 80% at 50% 0%,rgba(232,0,26,0.2) 0%,transparent 70%);pointer-events:none;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;background-image:radial-gradient(ellipse 80% 40% at 50% -10%,rgba(232,0,26,0.12) 0%,transparent 70%),repeating-linear-gradient(-45deg,transparent,transparent 40px,rgba(232,0,26,0.015) 40px,rgba(232,0,26,0.015) 41px);}
+header{position:relative;padding:2.2rem 2rem 1.6rem;text-align:center;overflow:hidden;border-bottom:1px solid rgba(232,0,26,0.3);background:linear-gradient(180deg,#0a0006 0%,var(--bg) 100%);}
+header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 0%,rgba(232,0,26,0.2) 0%,transparent 70%);pointer-events:none;}
 .bey-ring{position:absolute;border-radius:50%;border:1px solid rgba(232,0,26,0.15);pointer-events:none;top:50%;left:50%;transform:translate(-50%,-50%);}
 .bey-ring:nth-child(1){width:300px;height:300px;animation:spin 12s linear infinite;}
 .bey-ring:nth-child(2){width:220px;height:220px;border-color:rgba(200,204,212,0.1);animation:spin 8s linear infinite reverse;}
@@ -42,15 +26,10 @@ header .subtitle{position:relative;margin-top:0.5rem;font-family:var(--font-mono
 .btn-primary:hover{box-shadow:0 0 25px rgba(232,0,26,0.6);transform:translateY(-1px);}
 .btn-secondary{background:#13131a;color:var(--chrome);border:1px solid #2a2a3a;}
 .btn-secondary:hover{border-color:var(--red);color:var(--red);}
-.btn-danger{background:linear-gradient(135deg,#7a0010,var(--lose));color:#fff;}
 .btn-sm{padding:0.35rem 0.9rem;font-size:0.65rem;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);}
 input,select{background:#0a0a10;border:1px solid #2a1a1a;color:var(--text);padding:0.55rem 0.9rem;border-radius:var(--radius);font-size:0.95rem;font-family:var(--font-body);font-weight:600;outline:none;transition:border-color 0.2s,box-shadow 0.2s;width:100%;}
 input:focus,select:focus{border-color:var(--red);box-shadow:0 0 0 2px rgba(232,0,26,0.15);}
-::-webkit-scrollbar{width:6px;height:6px;}
-::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:#2a1a1a;border-radius:3px;}
-::-webkit-scrollbar-thumb:hover{background:var(--red);}
-
+::-webkit-scrollbar{width:6px;height:6px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:#2a1a1a;border-radius:3px;}::-webkit-scrollbar-thumb:hover{background:var(--red);}
 .page-wrap{max-width:900px;margin:0 auto;padding:2rem 1.2rem 4rem;}
 .admin-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.35);color:var(--gold);border-radius:3px;padding:0.15rem 0.6rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);}
 .section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:1.5rem;position:relative;}
@@ -68,58 +47,119 @@ input:focus,select:focus{border-color:var(--red);box-shadow:0 0 0 2px rgba(232,0
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;text-align:center;}
 .stat-num{font-family:var(--font-head);font-size:2rem;font-weight:900;}
 .stat-lbl{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;color:var(--muted);margin-top:0.3rem;}
-.stat-total .stat-num{color:var(--chrome);}
-.stat-confirmed .stat-num{color:var(--win);}
-.stat-waitlist .stat-num{color:var(--gold);}
-.stat-remain .stat-num{color:var(--red);}
+.stat-total .stat-num{color:var(--chrome);}.stat-confirmed .stat-num{color:var(--win);}.stat-waitlist .stat-num{color:var(--gold);}.stat-remain .stat-num{color:var(--red);}
 .reg-table{width:100%;border-collapse:collapse;font-size:0.88rem;}
 .reg-table th{padding:0.55rem 1rem;text-align:left;font-family:var(--font-mono);font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.2);}
 .reg-table td{padding:0.6rem 1rem;border-bottom:1px solid rgba(30,30,40,0.5);vertical-align:middle;font-weight:600;}
-.reg-table tr:last-child td{border-bottom:none;}
-.reg-table tr:hover td{background:rgba(232,0,26,0.03);}
+.reg-table tr:last-child td{border-bottom:none;}.reg-table tr:hover td{background:rgba(232,0,26,0.03);}
 .num-cell{font-family:var(--font-head);font-size:1.1rem;font-weight:900;color:var(--red);}
-.badge-confirmed{display:inline-block;padding:0.1rem 0.5rem;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.3);color:var(--win);border-radius:3px;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.06em;}
-.badge-waitlist{display:inline-block;padding:0.1rem 0.5rem;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);color:var(--gold);border-radius:3px;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.06em;}
+.badge-confirmed{display:inline-block;padding:0.1rem 0.5rem;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.3);color:var(--win);border-radius:3px;font-family:var(--font-mono);font-size:0.62rem;}
+.badge-waitlist{display:inline-block;padding:0.1rem 0.5rem;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);color:var(--gold);border-radius:3px;font-family:var(--font-mono);font-size:0.62rem;}
 .del-btn{padding:0.2rem 0.5rem;background:rgba(255,23,68,0.08);border:1px solid rgba(255,23,68,0.2);color:var(--lose);border-radius:3px;font-size:0.72rem;cursor:pointer;font-family:var(--font-mono);transition:all 0.15s;}
 .del-btn:hover{background:rgba(255,23,68,0.2);border-color:var(--lose);}
 .promote-btn{padding:0.2rem 0.5rem;background:rgba(0,230,118,0.07);border:1px solid rgba(0,230,118,0.2);color:var(--win);border-radius:3px;font-size:0.72rem;cursor:pointer;font-family:var(--font-mono);transition:all 0.15s;margin-right:4px;}
 .promote-btn:hover{background:rgba(0,230,118,0.18);border-color:var(--win);}
-.filter-row{display:flex;gap:0.6rem;margin-bottom:1rem;flex-wrap:wrap;}
 .filter-btn{padding:0.3rem 0.8rem;border:1px solid var(--border);background:var(--surface2);color:var(--muted);border-radius:3px;font-family:var(--font-mono);font-size:0.65rem;cursor:pointer;letter-spacing:0.08em;transition:all 0.15s;}
 .filter-btn.active{border-color:var(--red);color:var(--red);background:rgba(232,0,26,0.06);}
-.export-row{display:flex;gap:0.6rem;margin-top:1rem;}
 .empty-state{text-align:center;padding:3rem;color:var(--muted);font-family:var(--font-mono);font-size:0.78rem;letter-spacing:0.12em;}
 @media(max-width:600px){.settings-grid{grid-template-columns:1fr 1fr;}.stat-row{grid-template-columns:1fr 1fr;}}
+
+/* ── LOGIN OVERLAY ── */
+#login-overlay{
+  position:fixed;inset:0;z-index:999;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  background-image:radial-gradient(ellipse 80% 40% at 50% -10%,rgba(232,0,26,0.15) 0%,transparent 70%),repeating-linear-gradient(-45deg,transparent,transparent 40px,rgba(232,0,26,0.02) 40px,rgba(232,0,26,0.02) 41px);
+}
+.login-box{
+  width:min(380px,92vw);
+  background:var(--surface);border:1px solid rgba(232,0,26,0.3);
+  border-radius:12px;overflow:hidden;
+  position:relative;
+}
+.login-box::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--red),transparent);}
+.login-head{
+  padding:1.6rem 1.8rem 1.2rem;text-align:center;
+  background:rgba(232,0,26,0.05);border-bottom:1px solid var(--border);
+}
+.login-head .lock{font-size:2rem;margin-bottom:0.5rem;}
+.login-head h2{font-family:var(--font-head);font-size:0.9rem;font-weight:900;color:var(--red);letter-spacing:0.2em;text-transform:uppercase;}
+.login-head p{font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;margin-top:0.3rem;}
+.login-body{padding:1.6rem 1.8rem;}
+.login-field{display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1.1rem;}
+.login-field label{font-family:var(--font-mono);font-size:0.62rem;color:var(--red);letter-spacing:0.15em;text-transform:uppercase;}
+.login-field input{font-family:var(--font-head);font-size:1.4rem;font-weight:900;letter-spacing:0.3em;text-align:center;color:var(--chrome);}
+.login-error{font-family:var(--font-mono);font-size:0.7rem;color:var(--lose);letter-spacing:0.08em;margin-bottom:0.8rem;min-height:1.2em;text-align:center;opacity:0;transition:opacity 0.2s;}
+.login-error.show{opacity:1;}
+.login-btn{width:100%;padding:0.8rem;font-size:0.78rem;letter-spacing:0.15em;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);}
+.login-shake{animation:shake 0.4s;}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+
+/* change password section */
+.pw-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
 </style>
+
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getDatabase,ref,onValue,remove,update,set}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import{getDatabase,ref,onValue,remove,update,set,get}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
 const app=initializeApp({apiKey:"AIzaSyAwQKN-ik2LuUHnDwbY2Xh5lVIsQDw0gLQ",authDomain:"beyblade-x-9fd7c.firebaseapp.com",databaseURL:"https://beyblade-x-9fd7c-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"beyblade-x-9fd7c",storageBucket:"beyblade-x-9fd7c.firebasestorage.app",messagingSenderId:"167133820929",appId:"1:167133820929:web:f07c3fccd97e20a03c6800"});
 const db=getDatabase(app);
+
 let settings={total:32,confirmed:16,waitlist:8};
 let registrations={};
 let currentFilter='all';
 
-onValue(ref(db,'reg_settings'),(snap)=>{
-  if(snap.val())settings=snap.val();
-  document.getElementById('s-total').value=settings.total;
-  document.getElementById('s-confirmed').value=settings.confirmed;
-  document.getElementById('s-waitlist').value=settings.waitlist;
-});
+// ── LOGIN ──
+const DEFAULT_PW='0912';
+let _authed=false;
 
-onValue(ref(db,'registrations'),(snap)=>{
-  registrations=snap.val()||{};
-  renderAll();
-});
+async function initLogin(){
+  // Ensure default password exists in Firebase
+  const snap=await get(ref(db,'admin_password'));
+  if(!snap.val()) await set(ref(db,'admin_password'),DEFAULT_PW);
+
+  document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin();});
+}
+
+window.tryLogin=async function(){
+  const input=document.getElementById('pw-input').value;
+  const snap=await get(ref(db,'admin_password'));
+  const pw=snap.val()||DEFAULT_PW;
+  if(input===pw){
+    _authed=true;
+    document.getElementById('login-overlay').style.display='none';
+    startAdmin();
+  } else {
+    const box=document.getElementById('login-box');
+    const err=document.getElementById('login-error');
+    err.textContent='✕ 密碼錯誤';err.classList.add('show');
+    box.classList.add('login-shake');
+    document.getElementById('pw-input').value='';
+    setTimeout(()=>{box.classList.remove('login-shake');err.classList.remove('show');},1500);
+  }
+};
+
+function startAdmin(){
+  onValue(ref(db,'reg_settings'),(snap)=>{
+    if(snap.val())settings=snap.val();
+    document.getElementById('s-total').value=settings.total;
+    document.getElementById('s-confirmed').value=settings.confirmed;
+    document.getElementById('s-waitlist').value=settings.waitlist;
+  });
+  onValue(ref(db,'registrations'),(snap)=>{
+    registrations=snap.val()||{};
+    renderAll();
+  });
+}
 
 function renderAll(){
-  const vals=Object.entries(registrations).map(([k,v])=>{return{...v,_key:k};});
+  const vals=Object.entries(registrations).map(([k,v])=>({...v,_key:k}));
   vals.sort((a,b)=>a.seq-b.seq);
   const conf=vals.filter(v=>v.type==='confirmed');
   const wait=vals.filter(v=>v.type==='waitlist');
-  const total=vals.length;
-  const remain=Math.max(0,settings.confirmed+settings.waitlist-total);
-  document.getElementById('stat-total').textContent=total;
+  const remain=Math.max(0,settings.confirmed+settings.waitlist-vals.length);
+  document.getElementById('stat-total').textContent=vals.length;
   document.getElementById('stat-conf').textContent=conf.length+'/'+settings.confirmed;
   document.getElementById('stat-wait').textContent=wait.length+'/'+settings.waitlist;
   document.getElementById('stat-remain').textContent=remain;
@@ -129,23 +169,12 @@ function renderAll(){
   else if(currentFilter==='waitlist')filtered=wait;
 
   const tbody=document.getElementById('reg-tbody');
-  if(filtered.length===0){
-    tbody.innerHTML='<tr><td colspan="7"><div class="empty-state">NO ENTRIES FOUND</div></td></tr>';
-    return;
-  }
+  if(filtered.length===0){tbody.innerHTML='<tr><td colspan="7"><div class="empty-state">NO ENTRIES FOUND</div></td></tr>';return;}
   tbody.innerHTML=filtered.map(r=>{
     const date=new Date(r.ts).toLocaleDateString('zh-TW')+' '+new Date(r.ts).toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});
     const badge=r.type==='confirmed'?'<span class="badge-confirmed">✓ 正取</span>':'<span class="badge-waitlist">◈ 備取</span>';
     const promote=r.type==='waitlist'?`<button class="promote-btn" onclick="promote('${r._key}')">↑ 晉正</button>`:'';
-    return `<tr>
-      <td class="num-cell">#${String(r.seq).padStart(2,'0')}</td>
-      <td style="font-weight:700">${r.name}</td>
-      <td style="font-family:var(--font-mono);font-size:0.82rem;color:var(--chrome2)">${r.phone}</td>
-      <td style="font-family:var(--font-mono);font-size:0.78rem;color:var(--chrome2)">${r.email}</td>
-      <td>${badge}</td>
-      <td style="font-family:var(--font-mono);font-size:0.72rem;color:var(--muted)">${date}</td>
-      <td>${promote}<button class="del-btn" onclick="deleteReg('${r._key}','${r.name}')">✕</button></td>
-    </tr>`;
+    return`<tr><td class="num-cell">#${String(r.seq).padStart(2,'0')}</td><td style="font-weight:700">${r.name}</td><td style="font-family:var(--font-mono);font-size:0.82rem;color:var(--chrome2)">${r.phone}</td><td style="font-family:var(--font-mono);font-size:0.78rem;color:var(--chrome2)">${r.email}</td><td>${badge}</td><td style="font-family:var(--font-mono);font-size:0.72rem;color:var(--muted)">${date}</td><td>${promote}<button class="del-btn" onclick="deleteReg('${r._key}','${r.name}')">✕</button></td></tr>`;
   }).join('');
 }
 
@@ -156,13 +185,9 @@ window.setFilter=function(f){
 };
 
 window.saveSettings=async function(){
-  const t=parseInt(document.getElementById('s-total').value)||32;
-  const c=parseInt(document.getElementById('s-confirmed').value)||16;
-  const w=parseInt(document.getElementById('s-waitlist').value)||8;
-  settings={total:t,confirmed:c,waitlist:w};
+  settings={total:parseInt(document.getElementById('s-total').value)||32,confirmed:parseInt(document.getElementById('s-confirmed').value)||16,waitlist:parseInt(document.getElementById('s-waitlist').value)||8};
   await set(ref(db,'reg_settings'),settings);
-  const h=document.getElementById('saved-hint');
-  h.style.opacity='1';setTimeout(()=>h.style.opacity='0',1800);
+  flash('saved-hint');
 };
 
 window.deleteReg=function(key,name){
@@ -180,30 +205,65 @@ window.promote=function(key){
 window.exportCSV=function(){
   const vals=Object.values(registrations).sort((a,b)=>a.seq-b.seq);
   const rows=[['號碼','姓名','電話','Email','狀態','報名時間']];
-  vals.forEach(r=>{
-    rows.push([
-      '#'+String(r.seq).padStart(2,'0'),
-      r.name,r.phone,r.email,
-      r.type==='confirmed'?'正取':'備取',
-      new Date(r.ts).toLocaleString('zh-TW')
-    ]);
-  });
+  vals.forEach(r=>rows.push(['#'+String(r.seq).padStart(2,'0'),r.name,r.phone,r.email,r.type==='confirmed'?'正取':'備取',new Date(r.ts).toLocaleString('zh-TW')]));
   const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
-  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));
   a.download='beyblade_x_registrations.csv';a.click();
 };
+
+window.changePassword=async function(){
+  const cur=document.getElementById('pw-cur').value.trim();
+  const n1=document.getElementById('pw-new').value.trim();
+  const n2=document.getElementById('pw-new2').value.trim();
+  const hint=document.getElementById('pw-hint');
+
+  if(!cur||!n1||!n2){showHint(hint,'請填寫所有欄位','var(--lose)');return;}
+  const snap=await get(ref(db,'admin_password'));
+  if(cur!==(snap.val()||DEFAULT_PW)){showHint(hint,'✕ 現有密碼錯誤','var(--lose)');return;}
+  if(n1!==n2){showHint(hint,'✕ 兩次新密碼不一致','var(--lose)');return;}
+  if(n1.length<4){showHint(hint,'✕ 密碼至少 4 碼','var(--lose)');return;}
+  await set(ref(db,'admin_password'),n1);
+  document.getElementById('pw-cur').value='';
+  document.getElementById('pw-new').value='';
+  document.getElementById('pw-new2').value='';
+  showHint(hint,'✓ 密碼已更新，下次登入生效','var(--win)');
+};
+
+function showHint(el,msg,color){el.textContent=msg;el.style.color=color;el.style.opacity='1';setTimeout(()=>el.style.opacity='0',2500);}
+function flash(id){const h=document.getElementById(id);h.style.opacity='1';setTimeout(()=>h.style.opacity='0',1800);}
+
+initLogin();
 </script>
 </head>
 <body>
+
+<!-- LOGIN OVERLAY -->
+<div id="login-overlay">
+  <div class="login-box" id="login-box">
+    <div class="login-head">
+      <div class="lock">🔐</div>
+      <h2>ADMIN ACCESS</h2>
+      <p>BEYBLADE X CONTROL PANEL</p>
+    </div>
+    <div class="login-body">
+      <div class="login-field">
+        <label>PASSWORD 密碼</label>
+        <input type="password" id="pw-input" placeholder="••••" maxlength="20" autocomplete="off"/>
+      </div>
+      <div class="login-error" id="login-error"></div>
+      <button class="btn btn-primary login-btn" onclick="tryLogin()">▶ ENTER</button>
+    </div>
+  </div>
+</div>
+
 <header>
   <div class="bey-ring"></div><div class="bey-ring"></div><div class="bey-ring"></div>
   <h1>BEYBLADE <span class="x-letter">X</span></h1>
   <div class="subtitle">◆ ADMIN CONTROL PANEL ◆ <span class="admin-badge">👑 ADMIN</span></div>
 </header>
+
 <div class="page-wrap">
 
-  <!-- Stats -->
   <div class="stat-row">
     <div class="stat-card stat-total"><div class="stat-num" id="stat-total">—</div><div class="stat-lbl">TOTAL ENTRIES</div></div>
     <div class="stat-card stat-confirmed"><div class="stat-num" id="stat-conf">—</div><div class="stat-lbl">CONFIRMED</div></div>
@@ -211,29 +271,43 @@ window.exportCSV=function(){
     <div class="stat-card stat-remain"><div class="stat-num" id="stat-remain">—</div><div class="stat-lbl">SLOTS LEFT</div></div>
   </div>
 
-  <!-- Settings -->
+  <!-- Slot Settings -->
   <div class="section">
-    <div class="section-head">
-      <div class="section-title">⚙ SLOT SETTINGS</div>
-    </div>
+    <div class="section-head"><div class="section-title">⚙ SLOT SETTINGS</div></div>
     <div class="section-body">
       <div class="settings-grid">
-        <div class="setting-item">
-          <label>TOTAL SLOTS 總名額</label>
-          <input type="number" id="s-total" min="1" max="999" value="32"/>
-        </div>
-        <div class="setting-item">
-          <label>CONFIRMED 正取</label>
-          <input type="number" id="s-confirmed" min="1" max="999" value="16"/>
-        </div>
-        <div class="setting-item">
-          <label>WAITLIST 備取</label>
-          <input type="number" id="s-waitlist" min="0" max="999" value="8"/>
-        </div>
+        <div class="setting-item"><label>TOTAL SLOTS 總名額</label><input type="number" id="s-total" min="1" max="999" value="32"/></div>
+        <div class="setting-item"><label>CONFIRMED 正取</label><input type="number" id="s-confirmed" min="1" max="999" value="16"/></div>
+        <div class="setting-item"><label>WAITLIST 備取</label><input type="number" id="s-waitlist" min="0" max="999" value="8"/></div>
       </div>
       <div class="save-row">
         <button class="btn btn-primary btn-sm" onclick="saveSettings()">▶ SAVE SETTINGS</button>
         <span class="saved-hint" id="saved-hint">✓ SAVED</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Change Password -->
+  <div class="section">
+    <div class="section-head"><div class="section-title">🔑 CHANGE PASSWORD 更換密碼</div></div>
+    <div class="section-body">
+      <div class="pw-grid">
+        <div class="setting-item">
+          <label>現有密碼</label>
+          <input type="password" id="pw-cur" placeholder="••••" maxlength="20" autocomplete="off"/>
+        </div>
+        <div class="setting-item">
+          <label>新密碼</label>
+          <input type="password" id="pw-new" placeholder="••••" maxlength="20" autocomplete="off"/>
+        </div>
+        <div class="setting-item">
+          <label>確認新密碼</label>
+          <input type="password" id="pw-new2" placeholder="••••" maxlength="20" autocomplete="off"/>
+        </div>
+      </div>
+      <div class="save-row">
+        <button class="btn btn-primary btn-sm" onclick="changePassword()">▶ UPDATE PASSWORD</button>
+        <span class="saved-hint" id="pw-hint" style="opacity:0;transition:opacity 0.3s;font-family:var(--font-mono);font-size:0.7rem;"></span>
       </div>
     </div>
   </div>
@@ -245,19 +319,15 @@ window.exportCSV=function(){
       <button class="btn btn-secondary btn-sm" onclick="exportCSV()">↓ EXPORT CSV</button>
     </div>
     <div class="section-body">
-      <div class="filter-row">
+      <div style="display:flex;gap:0.6rem;margin-bottom:1rem;flex-wrap:wrap">
         <button class="filter-btn active" data-f="all" onclick="setFilter('all')">ALL</button>
         <button class="filter-btn" data-f="confirmed" onclick="setFilter('confirmed')">✓ CONFIRMED</button>
         <button class="filter-btn" data-f="waitlist" onclick="setFilter('waitlist')">◈ WAITLIST</button>
       </div>
       <div style="overflow-x:auto">
         <table class="reg-table">
-          <thead><tr>
-            <th>NO.</th><th>NAME 姓名</th><th>PHONE 電話</th><th>EMAIL</th><th>STATUS</th><th>TIME 時間</th><th>ACTION</th>
-          </tr></thead>
-          <tbody id="reg-tbody">
-            <tr><td colspan="7"><div class="empty-state">LOADING…</div></td></tr>
-          </tbody>
+          <thead><tr><th>NO.</th><th>NAME</th><th>PHONE</th><th>EMAIL</th><th>STATUS</th><th>TIME</th><th>ACTION</th></tr></thead>
+          <tbody id="reg-tbody"><tr><td colspan="7"><div class="empty-state">請先登入</div></td></tr></tbody>
         </table>
       </div>
     </div>
